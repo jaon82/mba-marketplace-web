@@ -8,7 +8,7 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import ProfileAvatar from "./profile-avatar";
 import { Button } from "./ui/button";
-import Logo from "/src/assets/logo-icon.svg";
+import Logo from "/src/assets/logo.svg";
 
 export default function Header() {
   return (
