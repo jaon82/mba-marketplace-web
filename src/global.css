@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -8,7 +10,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
+  --color-background: #fbf4f4;
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -39,6 +41,55 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-orange-base: #f24d0d;
+  --color-orange-dark: #c43c08;
+  --color-blue-light: #d7eff9;
+  --color-blue-base: #5ec5fd;
+  --color-blue-dark: #009cf0;
+  --color-white: #ffffff;
+  --color-shape: #f5eaea;
+  --gray-100: #adadad;
+  --gray-200: #949494;
+  --gray-300: #666666;
+  --gray-400: #3d3d3d;
+  --gray-500: #1d1d1d;
+  --danger: #dc3545;
+  --success: #28a745;
+  --font-dm-sans: "DM Sans", sans-serif;
+  --font-poppins: Poppins, sans-serif;
+  --text-title-lg: 1.75rem;
+  --text-title-lg--line-height: 1.2;
+  --text-title-lg--font-weight: 700;
+  --text-title-md: 1.5rem;
+  --text-title-md--line-height: 1.2;
+  --text-title-md--font-weight: 700;
+  --text-title-sm: 1.125rem;
+  --text-title-sm--line-height: 1.2;
+  --text-title-sm--font-weight: 700;
+  --text-subtitle: 1rem;
+  --text-subtitle--line-height: 1.2;
+  --text-subtitle--font-weight: 600;
+  --text-body-md: 1rem;
+  --text-body-md--line-height: 1.2;
+  --text-body-md--font-weight: 400;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.2;
+  --text-body-sm--font-weight: 400;
+  --text-body-xs: 0.75rem;
+  --text-body-xs--line-height: 1.2;
+  --text-body-xs--font-weight: 400;
+  --text-label-md: 0.75rem;
+  --text-label-md--line-height: 1.2;
+  --text-label-md--font-weight: 500;
+  --text-label-sm: 0.625rem;
+  --text-label-sm--line-height: 1.2;
+  --text-label-sm--font-weight: 500;
+  --text-action-md: 1rem;
+  --text-action-md--line-height: 1.2;
+  --text-action-md--font-weight: 500;
+  --text-action-sm: 0.875rem;
+  --text-action-sm--line-height: 1.2;
+  --text-action-sm--font-weight: 500;
 }
 
 :root {
@@ -115,6 +166,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground leading-[1.2];
   }
 }
