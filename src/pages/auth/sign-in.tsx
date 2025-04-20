@@ -8,6 +8,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router";
 import * as z from "zod";
 
 const signInForm = z.object({
@@ -88,8 +89,9 @@ export default function SignIn() {
           type="button"
           variant={"outline"}
           size={"lg"}
+          asChild
         >
-          Cadastrar
+          <Link to="/sign-up">Cadastrar</Link>
         </Button>
       </div>
     </div>
