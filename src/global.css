@@ -17,13 +17,13 @@
   --color-blue-dark: #009cf0;
   --color-white: #ffffff;
   --color-shape: #f5eaea;
-  --gray-100: #adadad;
-  --gray-200: #949494;
-  --gray-300: #666666;
-  --gray-400: #3d3d3d;
-  --gray-500: #1d1d1d;
-  --danger: #dc3545;
-  --success: #28a745;
+  --color-gray-100: #adadad;
+  --color-gray-200: #949494;
+  --color-gray-300: #666666;
+  --color-gray-400: #3d3d3d;
+  --color-gray-500: #1d1d1d;
+  --color-danger: #dc3545;
+  --color-success: #28a745;
   --font-dm-sans: "DM Sans", sans-serif;
   --font-poppins: Poppins, sans-serif;
   --text-title-lg: 1.75rem;
@@ -63,6 +63,6 @@
 
 @layer base {
   body {
-    @apply bg-background text-body-md leading-[1.2];
+    @apply bg-background font-poppins text-body-md leading-[1.2];
   }
 }
