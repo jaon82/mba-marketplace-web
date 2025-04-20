@@ -7,8 +7,28 @@ import {
   Mail02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const signInForm = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+
+type SignInForm = z.infer<typeof signInForm>;
 
 export default function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SignInForm>();
+
+  async function handleSignIn(data: SignInForm) {
+    console.log(data);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+
   return (
     <div className="flex flex-col flex-1 justify-between m-6 bg-white px-20 py-18 rounded-[2rem]">
       <div className="flex flex-col gap-12">
@@ -21,7 +41,10 @@ export default function SignIn() {
           </p>
         </div>
 
-        <form className="flex flex-col gap-12">
+        <form
+          className="flex flex-col gap-12"
+          onSubmit={handleSubmit(handleSignIn)}
+        >
           <div className="flex flex-col gap-5">
             <div className="relative space-y-5">
               <Input
@@ -29,6 +52,7 @@ export default function SignIn() {
                 type="email"
                 placeholder="Seu e-mail cadastrado"
                 icon={Mail02Icon}
+                {...register("email")}
               />
               <Label htmlFor="email">E-mail</Label>
             </div>
@@ -39,12 +63,18 @@ export default function SignIn() {
                 type="password"
                 placeholder="Sua senha de acesso"
                 icon={AccessIcon}
+                {...register("password")}
               />
               <Label htmlFor="password">Senha</Label>
             </div>
           </div>
 
-          <Button className="w-full" type="submit" size={"lg"}>
+          <Button
+            className="w-full"
+            type="submit"
+            size={"lg"}
+            disabled={isSubmitting}
+          >
             Acessar painel
             <HugeiconsIcon icon={ArrowRight02Icon} size={24} />
           </Button>
