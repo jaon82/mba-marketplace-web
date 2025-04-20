@@ -12,8 +12,8 @@ import Logo from "/src/assets/logo.svg";
 
 export default function Header() {
   return (
-    <div className="border-b">
-      <div className="flex h-16 justify-between items-center gap-6 p-5">
+    <div className="border-b border-shape">
+      <div className="flex h-20 justify-between items-center p-5">
         <img src={Logo} className="h-10" />
         <nav className="flex items-center space-x-4 lg:space-x-6">
           <NavLink to="/">
