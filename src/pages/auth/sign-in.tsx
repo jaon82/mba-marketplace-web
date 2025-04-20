@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AccessIcon, Mail02Icon } from "@hugeicons/core-free-icons";
+import {
+  AccessIcon,
+  ArrowRight02Icon,
+  Mail02Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 export default function SignIn() {
   return (
@@ -39,32 +44,23 @@ export default function SignIn() {
             </div>
           </div>
 
-          <Button className="w-full" type="submit">
+          <Button className="w-full" type="submit" size={"lg"}>
             Acessar painel
+            <HugeiconsIcon icon={ArrowRight02Icon} size={24} />
           </Button>
         </form>
       </div>
 
-      <div className="flex flex-col justify-center gap-6">
-        <div className="flex flex-col gap-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Acessar painel
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Acompanhe suas vendas pelo painel do parceiro!
-          </p>
-        </div>
-
-        <form className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Seu e-mail</Label>
-            <Input id="email" type="email" />
-          </div>
-
-          <Button className="w-full" type="submit">
-            Acessar painel
-          </Button>
-        </form>
+      <div className="flex flex-col gap-5">
+        <h1 className="text-gray-300">Ainda não tem uma conta?</h1>
+        <Button
+          className="w-full"
+          type="button"
+          variant={"outline"}
+          size={"lg"}
+        >
+          Cadastrar
+        </Button>
       </div>
     </div>
   );
