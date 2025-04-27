@@ -91,7 +91,10 @@ export default function SignIn() {
           size={"lg"}
           asChild
         >
-          <Link to="/sign-up">Cadastrar</Link>
+          <Link to="/sign-up">
+            Cadastrar
+            <HugeiconsIcon icon={ArrowRight02Icon} size={24} />
+          </Link>
         </Button>
       </div>
     </div>
