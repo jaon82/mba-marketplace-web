@@ -10,12 +10,10 @@ import {
 
 export default function Graph() {
   return (
-    <Card className="flex-1 bg-white rounded-[20px] border-0">
+    <Card className="flex-1 ">
       <CardHeader className="flex justify-between">
-        <CardTitle className="font-dm-sans text-title-sm text-gray-500">
-          Visitantes
-        </CardTitle>
-        <CardDescription className="flex gap-2 items-center text-label-sm text-gray-300 uppercase">
+        <CardTitle>Visitantes</CardTitle>
+        <CardDescription className="flex gap-2 items-center">
           <HugeiconsIcon
             icon={Calendar04Icon}
             size={20}
