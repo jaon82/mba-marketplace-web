@@ -1,5 +1,5 @@
-import Graph from "@/components/graph";
 import ProductsFilter from "@/components/products-filter";
+import ProductsList from "@/components/products-list";
 
 export default function Products() {
   return (
@@ -9,7 +9,7 @@ export default function Products() {
       </div>
       <div className="flex gap-6 justify-between">
         <ProductsFilter />
-        <Graph />
+        <ProductsList />
       </div>
     </>
   );
