@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ImageUploadIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Label } from "./ui/label";
@@ -12,6 +14,7 @@ import {
 } from "./ui/select";
 
 const signInForm = z.object({
+  image: z.instanceof(File),
   title: z.string(),
   value: z.number(),
   description: z.string(),
@@ -33,11 +36,20 @@ export default function ProductCreateForm() {
   }
 
   return (
-    <div className="flex gap-6 w-full">
-      <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr_CUenXI49kBhIW0BP_1KBDKrPIboZLXGXQ&s"
-        className="w-[25rem] object-cover rounded-[20px]"
-      />
+    <form className="flex gap-6 w-full" onSubmit={handleSubmit(handleSignIn)}>
+      <div className="flex flex-col gap-4 items-center justify-center bg-shape text-orange-base rounded-[12px] min-w-[20rem]">
+        <label htmlFor="image">
+          <HugeiconsIcon
+            icon={ImageUploadIcon}
+            size={32}
+            className=" cursor-pointer"
+          />
+        </label>
+        <input id="image" type="file" {...register("image")} hidden />
+        <div className="text-body-sm text-gray-300 max-w-[10rem] text-center">
+          Selecione a imagem do produto
+        </div>
+      </div>
       <div className="flex-1 flex flex-col gap-12 bg-white p-6 rounded-[20px]">
         <div className="flex flex-col gap-2">
           <h1 className="font-dm-sans text-title-sm text-gray-300">
@@ -45,10 +57,7 @@ export default function ProductCreateForm() {
           </h1>
         </div>
 
-        <form
-          className="flex flex-col gap-12"
-          onSubmit={handleSubmit(handleSignIn)}
-        >
+        <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-5">
             <div className="flex gap-5">
               <div className="relative space-y-5">
@@ -114,8 +123,8 @@ export default function ProductCreateForm() {
               Salvar e publicar
             </Button>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }
