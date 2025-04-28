@@ -1,4 +1,6 @@
 import { createBrowserRouter } from "react-router";
+import ProductCreateForm from "./components/product-create-form";
+import ProductEditForm from "./components/product-edit-form";
 import { AppLayout } from "./pages/_layouts/app";
 import { AuthLayout } from "./pages/_layouts/auth";
 import Dashboard from "./pages/app/dashboard";
@@ -18,6 +20,14 @@ export const router = createBrowserRouter([
       {
         path: "products",
         element: <Products />,
+      },
+      {
+        path: "products/new",
+        element: <ProductCreateForm />,
+      },
+      {
+        path: "products/edit",
+        element: <ProductEditForm />,
       },
     ],
   },

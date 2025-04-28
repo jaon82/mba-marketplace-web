@@ -6,6 +6,7 @@ import {
   PlusSignIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { Link } from "react-router";
 import ProfileAvatar from "./profile-avatar";
 import { Button } from "./ui/button";
 import Logo from "/src/assets/logo.svg";
@@ -30,9 +31,11 @@ export default function Header() {
           </NavLink>
         </nav>
         <div className="flex items-center gap-4">
-          <Button>
-            <HugeiconsIcon icon={PlusSignIcon} size={20} strokeWidth={1.5} />
-            Novo produto
+          <Button asChild>
+            <Link to="/products/new">
+              <HugeiconsIcon icon={PlusSignIcon} size={20} strokeWidth={1.5} />
+              Novo produto
+            </Link>
           </Button>
           <ProfileAvatar />
         </div>

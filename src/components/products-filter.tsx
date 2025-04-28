@@ -32,8 +32,8 @@ export default function ProductsFilter() {
   }
 
   return (
-    <div className="flex flex-col justify-between bg-white p-6 rounded-[20px]">
-      <div className="flex flex-col gap-12">
+    <div className="min-w-[20rem]">
+      <div className="flex flex-col gap-12 bg-white p-6 rounded-[20px]">
         <div className="flex flex-col gap-2">
           <h1 className="font-dm-sans text-title-sm text-gray-300">Filtrar</h1>
         </div>

@@ -5,14 +5,14 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center [:has(svg)]:justify-between [:not(:has(svg))]:justify-center cursor-pointer whitespace-nowrap rounded-[10px] text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center [:has(svg)]:justify-between [:not(:has(svg))]:justify-center cursor-pointer whitespace-nowrap rounded-[10px] text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
         default: "bg-orange-base text-white shadow-xs hover:bg-orange-dark",
         outline:
           "border border-orange-base text-orange-base text-action-md hover:bg-background hover:text-orange-dark",
-        link: "text-primary underline-offset-4 hover:underline",
+        link: "text-action-sm text-orange-base hover:text-orange-dark",
       },
       size: {
         default: "px-5 h-12 gap-3",
