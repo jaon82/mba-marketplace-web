@@ -1,3 +1,4 @@
+import { signUp } from "@/api/sign-up";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,8 +11,11 @@ import {
   UserIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 import * as z from "zod";
 
 const signUpForm = z.object({
@@ -27,15 +31,39 @@ const signUpForm = z.object({
 type SignUpForm = z.infer<typeof signUpForm>;
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<SignUpForm>();
 
+  const { mutateAsync: create } = useMutation({
+    mutationFn: signUp,
+  });
+
   async function handleSignUp(data: SignUpForm) {
-    console.log(data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      await create({
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        password: data.password,
+        passwordConfirmation: data.passwordConfirmation,
+      });
+      toast.success("Uusário cadastrado com sucesso!", {
+        action: {
+          label: "Login",
+          onClick: () => navigate(`/sign-in?email=${data.email}`),
+        },
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      } else {
+        toast.error("Erro ao cadastrar usuário.");
+      }
+    }
   }
 
   return (
@@ -121,7 +149,7 @@ export default function SignUp() {
             <div className="relative">
               <Input
                 id="passwordConfirmation"
-                type="passwordConfirmation"
+                type="password"
                 placeholder="Confirme a senha"
                 icon={AccessIcon}
                 {...register("passwordConfirmation")}
