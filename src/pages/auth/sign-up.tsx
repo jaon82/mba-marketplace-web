@@ -1,3 +1,4 @@
+import { uploadFile } from "@/api/attachments";
 import { signUp } from "@/api/sign-up";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +20,7 @@ import { toast } from "sonner";
 import * as z from "zod";
 
 const signUpForm = z.object({
-  avatar: z.instanceof(File),
+  avatar: z.instanceof(FileList),
   name: z.string(),
   phone: z.string(),
   email: z.string().email(),
@@ -44,7 +45,13 @@ export default function SignUp() {
 
   async function handleSignUp(data: SignUpForm) {
     try {
+      let avatarId = null;
+      if (data.avatar) {
+        const avatarResponse = await uploadFile({ files: data.avatar });
+        avatarId = avatarResponse.data.attachments[0].id;
+      }
       await create({
+        avatarId,
         name: data.name,
         phone: data.phone,
         email: data.email,
