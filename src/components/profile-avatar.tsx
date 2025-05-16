@@ -9,8 +9,6 @@ export default function ProfileAvatar() {
     queryFn: getProfile,
   });
 
-  console.log(profile);
-
   return (
     <div className="flex justify-center items-center w-12 h-12 rounded-[10px] cursor-pointer bg-shape text-orange-base">
       {profile?.seller.avatar ? (
