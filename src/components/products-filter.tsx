@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SaleTag02Icon, Search01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router";
 import * as z from "zod";
 import {
   Select,
@@ -13,22 +14,38 @@ import {
 } from "./ui/select";
 
 const signInForm = z.object({
-  email: z.string().email(),
-  password: z.string(),
+  search: z.string().optional(),
+  status: z.string().optional(),
 });
 
 type SignInForm = z.infer<typeof signInForm>;
 
 export default function ProductsFilter() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
+  const status = searchParams.get("status") || "";
   const {
     register,
     handleSubmit,
+    control,
     formState: { isSubmitting },
-  } = useForm<SignInForm>();
+  } = useForm<SignInForm>({ defaultValues: { search, status } });
 
   async function handleSignIn(data: SignInForm) {
-    console.log(data);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    setSearchParams((oldState) => {
+      const newState = new URLSearchParams(oldState.toString());
+      if (data.search) {
+        newState.set("search", data.search);
+      } else {
+        newState.delete("search");
+      }
+      if (data.status && data.status !== "all") {
+        newState.set("status", data.status);
+      } else {
+        newState.delete("status");
+      }
+      return newState;
+    });
   }
 
   return (
@@ -45,30 +62,42 @@ export default function ProductsFilter() {
           <div className="flex flex-col gap-5">
             <div className="relative space-y-5">
               <Input
-                id="email"
-                type="email"
+                id="search"
+                type="search"
                 placeholder="Pesquisar"
                 icon={Search01Icon}
-                {...register("email")}
+                {...register("search")}
               />
             </div>
 
             <div className="relative">
-              <Select>
-                <SelectTrigger className="w-full">
-                  <HugeiconsIcon
-                    icon={SaleTag02Icon}
-                    size={24}
-                    className="size-[24px]"
-                  />
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="light">Anunciado</SelectItem>
-                  <SelectItem value="dark">Vendido</SelectItem>
-                  <SelectItem value="system">Cancelado</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                name="status"
+                control={control}
+                render={({ field: { name, onChange, value, disabled } }) => (
+                  <Select
+                    name={name}
+                    onValueChange={onChange}
+                    value={value}
+                    disabled={disabled}
+                  >
+                    <SelectTrigger className="w-full">
+                      <HugeiconsIcon
+                        icon={SaleTag02Icon}
+                        size={24}
+                        className="size-[24px]"
+                      />
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="available">Anunciado</SelectItem>
+                      <SelectItem value="sold">Vendido</SelectItem>
+                      <SelectItem value="cancelled">Cancelado</SelectItem>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
             </div>
           </div>
 

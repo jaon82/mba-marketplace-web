@@ -1,15 +1,17 @@
+import { SellerProduct } from "@/interfaces/seller-products";
 import ProductCard from "./product-card";
 
-export default function ProductsList() {
+interface ProductsListProps {
+  products: SellerProduct[];
+}
+
+export default function ProductsList({ products }: ProductsListProps) {
   return (
     <>
       <div className="grid grid-cols-2 gap-6">
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
     </>
   );
