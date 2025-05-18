@@ -28,7 +28,6 @@ export default function Product() {
     mutationKey: ["set-product-as-sold"],
     mutationFn: updateProductStatus,
     onSuccess: (_, { productId, status }) => {
-      //const cachedData = queryClient.getQueryData(["get-product", productId]);
       queryClient.setQueryData(
         ["get-product", productId],
         (oldData: ProductResponse) => ({

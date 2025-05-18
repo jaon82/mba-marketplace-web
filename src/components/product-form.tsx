@@ -255,7 +255,9 @@ export default function ProductForm() {
               className="w-full"
               type="submit"
               size={"lg"}
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting || productData?.product.status !== "available"
+              }
             >
               Salvar e {!productId ? "publicar" : "atualizar"}
             </Button>
