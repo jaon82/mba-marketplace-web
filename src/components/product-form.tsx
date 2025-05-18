@@ -1,6 +1,8 @@
 import { uploadFile } from "@/api/attachments";
 import { createProduct } from "@/api/create-product";
 import { getCategories } from "@/api/get-categories";
+import { getProduct } from "@/api/get-product";
+import { updateProduct } from "@/api/update-product";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +11,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 import * as z from "zod";
 import FormError from "./form-error";
@@ -40,38 +42,64 @@ type TProductForm = z.infer<typeof productForm>;
 
 export default function ProductForm() {
   const navigate = useNavigate();
+  const { productId } = useParams();
+
+  const { data: productData } = useQuery({
+    enabled: !!productId,
+    queryKey: ["get-product", productId],
+    queryFn: () => getProduct(productId!),
+  });
+
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { isSubmitting, errors },
   } = useForm<TProductForm>({
     resolver: zodResolver(productForm),
   });
+
+  if (productData) {
+    setValue("categoryId", productData.product.category.id);
+  }
 
   const { data: categoriesResponse } = useQuery({
     queryKey: ["get-categories"],
     queryFn: getCategories,
   });
 
+  const { mutateAsync: saveFile } = useMutation({
+    mutationFn: uploadFile,
+  });
+
   const { mutateAsync: createProductFn } = useMutation({
     mutationFn: createProduct,
   });
 
-  const { mutateAsync: saveFile } = useMutation({
-    mutationFn: uploadFile,
+  const { mutateAsync: updateProductFn } = useMutation({
+    mutationFn: updateProduct,
   });
 
   const handleCancel = () => {
     navigate(-1);
   };
 
-  async function handleCreateProduct(data: TProductForm) {
+  async function handleSaveProduct(data: TProductForm) {
     try {
       const attachmentsIds = [];
+      if (!productId && data.image.length === 0) {
+        toast.error("Selecione a imagem do produto!");
+        return;
+      }
+      if (productId && data.image.length === 0) {
+        attachmentsIds.push(productData?.product.attachments[0].id);
+      }
       if (data.image.length > 0) {
         const imageResponse = await saveFile({ files: data.image });
         attachmentsIds.push(imageResponse.data.attachments[0].id);
+      }
+      if (!productId) {
         await createProductFn({
           attachmentsIds,
           categoryId: data.categoryId,
@@ -79,16 +107,29 @@ export default function ProductForm() {
           priceInCents: data.priceInCents,
           title: data.title,
         });
-        navigate("/products");
-        toast.success("Produto cadastrado com sucesso!");
       } else {
-        toast.error("Selecione a imagem do produto!");
+        await updateProductFn({
+          productId,
+          productData: {
+            attachmentsIds,
+            categoryId: data.categoryId,
+            description: data.description,
+            priceInCents: data.priceInCents,
+            title: data.title,
+          },
+        });
       }
+      toast.success(
+        `Produto ${!productId ? "cadastrado" : "atualizado"} com sucesso!`
+      );
+      navigate("/products");
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(error.response?.data.message);
       } else {
-        toast.error("Erro ao cadastrar produto.");
+        toast.error(
+          `Erro ao ${!productId ? "cadastrar" : "atualizar"} produto.`
+        );
       }
     }
   }
@@ -96,20 +137,29 @@ export default function ProductForm() {
   return (
     <form
       className="flex gap-6 w-full"
-      onSubmit={handleSubmit(handleCreateProduct)}
+      onSubmit={handleSubmit(handleSaveProduct)}
     >
       <div className="flex flex-col gap-4 items-center justify-center bg-shape text-orange-base rounded-[12px] min-w-[20rem]">
         <label htmlFor="image">
-          <HugeiconsIcon
-            icon={ImageUploadIcon}
-            size={32}
-            className=" cursor-pointer"
-          />
+          {!productId ? (
+            <HugeiconsIcon
+              icon={ImageUploadIcon}
+              size={32}
+              className=" cursor-pointer"
+            />
+          ) : (
+            <img
+              src={productData?.product.attachments[0].url}
+              className="max-w-[26rem]"
+            />
+          )}
         </label>
         <input id="image" type="file" {...register("image")} hidden />
-        <div className="text-body-sm text-gray-300 max-w-[10rem] text-center">
-          Selecione a imagem do produto
-        </div>
+        {!productId && (
+          <div className="text-body-sm text-gray-300 max-w-[10rem] text-center">
+            Selecione a imagem do produto
+          </div>
+        )}
       </div>
       <div className="flex-1 flex flex-col gap-12 bg-white p-6 rounded-[20px]">
         <div className="flex flex-col gap-2">
@@ -127,16 +177,19 @@ export default function ProductForm() {
                   type="text"
                   placeholder="Nome do produto"
                   {...register("title")}
+                  defaultValue={productData?.product.title}
                   error={errors.title?.message}
                 />
                 <Label htmlFor="title">Título</Label>
               </div>
               <div className="relative space-y-5">
                 <Input
+                  prefix="R$"
                   id="priceInCents"
                   type="number"
                   placeholder="R$ 0,00"
                   {...register("priceInCents")}
+                  defaultValue={productData?.product.priceInCents}
                   error={errors.priceInCents?.message}
                 />
                 <Label htmlFor="priceInCents">Valor</Label>
@@ -148,6 +201,7 @@ export default function ProductForm() {
                 type="text"
                 placeholder="Escreva detalhes sobre o produto, tamanho, características"
                 {...register("description")}
+                defaultValue={productData?.product.description}
                 error={errors.description?.message}
               />
               <Label htmlFor="description">Descrição</Label>
@@ -203,7 +257,7 @@ export default function ProductForm() {
               size={"lg"}
               disabled={isSubmitting}
             >
-              Salvar e publicar
+              Salvar e {!productId ? "publicar" : "atualizar"}
             </Button>
           </div>
         </div>

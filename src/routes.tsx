@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router";
-import ProductEditForm from "./components/product-edit-form";
 import { AppLayout } from "./pages/_layouts/app";
 import { AuthLayout } from "./pages/_layouts/auth";
 import Dashboard from "./pages/app/dashboard";
 import NewProduct from "./pages/app/new-product";
+import Product from "./pages/app/product";
 import Products from "./pages/app/products";
 import SignIn from "./pages/auth/sign-in";
 import SignUp from "./pages/auth/sign-up";
@@ -26,8 +26,8 @@ export const router = createBrowserRouter([
         element: <NewProduct />,
       },
       {
-        path: "products/edit",
-        element: <ProductEditForm />,
+        path: "products/:productId",
+        element: <Product />,
       },
     ],
   },

@@ -18,3 +18,7 @@ export interface SellerProduct {
 export interface SellerProductsResponse {
   products: SellerProduct[];
 }
+
+export interface ProductResponse {
+  product: SellerProduct;
+}

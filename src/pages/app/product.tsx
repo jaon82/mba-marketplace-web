@@ -1,4 +1,4 @@
-import ProductEditForm from "@/components/product-edit-form";
+import ProductForm from "@/components/product-form";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft02Icon,
@@ -37,7 +37,7 @@ export default function Product() {
           </div>
         </div>
       </div>
-      <ProductEditForm />
+      <ProductForm />
     </>
   );
 }

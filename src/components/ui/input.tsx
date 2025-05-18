@@ -8,9 +8,17 @@ import FormError from "../form-error";
 interface InputProps extends React.ComponentProps<"input"> {
   icon?: IconSvgElement;
   error?: string;
+  prefix?: string;
 }
 
-function Input({ icon: Icon, className, type, error, ...props }: InputProps) {
+function Input({
+  icon: Icon,
+  className,
+  type,
+  error,
+  prefix,
+  ...props
+}: InputProps) {
   const [inputType, setInputType] = React.useState(type);
 
   const handleToggleViewPassword = () => {
@@ -36,6 +44,11 @@ function Input({ icon: Icon, className, type, error, ...props }: InputProps) {
             size={24}
             className="group-active:text-orange-base group-has-[input:not(:placeholder-shown)]:text-orange-base"
           />
+        )}
+        {prefix && (
+          <span className="group-active:text-orange-base group-has-[input:not(:placeholder-shown)]:text-orange-base">
+            {prefix}
+          </span>
         )}
         <input
           type={inputType}
