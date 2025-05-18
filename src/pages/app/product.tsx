@@ -1,25 +1,44 @@
+import { getProduct } from "@/api/get-product";
 import { updateProductStatus } from "@/api/update-product-status";
 import ProductForm from "@/components/product-form";
 import { Button } from "@/components/ui/button";
-import { TProductStatus } from "@/interfaces/seller-products";
+import { ProductResponse } from "@/interfaces/seller-products";
 import {
   ArrowLeft02Icon,
   Tick02Icon,
   UnavailableIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { Link, useParams } from "react-router";
 import { toast } from "sonner";
 
 export default function Product() {
   const { productId } = useParams();
+  const queryClient = useQueryClient();
+
+  const { data: productData } = useQuery({
+    enabled: !!productId,
+    queryKey: ["get-product", productId],
+    queryFn: () => getProduct(productId!),
+  });
+
   const { mutateAsync: updateProductStatusFn } = useMutation({
     mutationKey: ["set-product-as-sold"],
     mutationFn: updateProductStatus,
-    onSuccess: () => {
-      toast.success("Status do produto atualizado com sucesso");
+    onSuccess: (_, { productId, status }) => {
+      //const cachedData = queryClient.getQueryData(["get-product", productId]);
+      queryClient.setQueryData(
+        ["get-product", productId],
+        (oldData: ProductResponse) => ({
+          ...oldData,
+          product: {
+            ...oldData.product,
+            status,
+          },
+        })
+      );
     },
     onError: (error) => {
       if (isAxiosError(error)) {
@@ -28,7 +47,18 @@ export default function Product() {
     },
   });
 
-  const handleUpdateProductStatus = async (status: TProductStatus) => {
+  const handleToggleSoldStatus = async () => {
+    const status =
+      productData?.product.status === "sold" ? "available" : "sold";
+    await updateProductStatusFn({
+      productId: productId!,
+      status,
+    });
+  };
+
+  const handleToggleCancelledStatus = async () => {
+    const status =
+      productData?.product.status === "cancelled" ? "available" : "cancelled";
     await updateProductStatusFn({
       productId: productId!,
       status,
@@ -55,16 +85,24 @@ export default function Product() {
         <div className="flex align-bottom gap-4 text-orange-base cursor-pointer [:hover]:text-orange-dark">
           <div
             className="flex gap-2 items-center"
-            onClick={() => handleUpdateProductStatus("sold")}
+            onClick={handleToggleSoldStatus}
           >
-            <HugeiconsIcon icon={Tick02Icon} size={20} />
+            <div className="min-w-[20px]">
+              {productData?.product.status === "sold" && (
+                <HugeiconsIcon icon={Tick02Icon} size={20} />
+              )}
+            </div>
             <span>Marcar como vendido</span>
           </div>
           <div
             className="flex gap-2 items-center"
-            onClick={() => handleUpdateProductStatus("cancelled")}
+            onClick={handleToggleCancelledStatus}
           >
-            <HugeiconsIcon icon={UnavailableIcon} size={20} />
+            <div className="min-w-[20px]">
+              {productData?.product.status === "cancelled" && (
+                <HugeiconsIcon icon={UnavailableIcon} size={20} />
+              )}
+            </div>
             <span>Desativar anúncio</span>
           </div>
         </div>
