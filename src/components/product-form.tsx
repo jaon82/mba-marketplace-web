@@ -61,6 +61,9 @@ export default function ProductForm() {
   });
 
   if (productData) {
+    setValue("title", productData.product.title);
+    setValue("priceInCents", productData.product.priceInCents);
+    setValue("description", productData.product.description);
     setValue("categoryId", productData.product.category.id);
   }
 
@@ -148,10 +151,22 @@ export default function ProductForm() {
               className=" cursor-pointer"
             />
           ) : (
-            <img
-              src={productData?.product.attachments[0].url}
-              className="max-w-[26rem]"
-            />
+            <div className="group relative flex justify-center items-center cursor-pointer text-white">
+              <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col gap-2 items-center justify-center z-10 invisible group-hover:visible bg-[#00000099]">
+                <HugeiconsIcon
+                  icon={ImageUploadIcon}
+                  size={32}
+                  className="cursor-pointer"
+                />
+                <div className="text-body-sm text-white max-w-[10rem] text-center">
+                  Selecione a imagem do produto
+                </div>
+              </div>
+              <img
+                src={productData?.product.attachments[0].url}
+                className="max-w-[26rem] z-0"
+              />
+            </div>
           )}
         </label>
         <input id="image" type="file" {...register("image")} hidden />
