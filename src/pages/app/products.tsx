@@ -19,7 +19,7 @@ export default function Products() {
       <div className="flex flex-col gap-2">
         <h2 className="text-body-sm text-gray-300">Filtrar</h2>
       </div>
-      <div className="flex gap-6 justify-between">
+      <div className="flex gap-6 justify-between pb-10">
         <ProductsFilter />
         {sellerProductsResponse && (
           <ProductsList products={sellerProductsResponse.products} />

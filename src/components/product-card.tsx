@@ -10,7 +10,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link to={`/products/${product.id}`}>
-      <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-white">
+      <div className="flex flex-col gap-1 p-1 rounded-[20px] bg-white border-2 border-transparent hover:border-blue-base">
         <div className="h-[9rem] relative rounded-[1rem] overflow-hidden">
           <div className="absolute top-0 left-0 right-0">
             <img
