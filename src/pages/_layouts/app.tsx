@@ -16,6 +16,7 @@ export function AppLayout() {
           if (statusCode === 401) {
             navigate("/sign-in", { replace: true });
           }
+          return Promise.reject(error);
         }
       }
     );

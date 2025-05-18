@@ -1,9 +1,11 @@
+export type TProductStatus = "available" | "sold" | "cancelled";
+
 export interface SellerProduct {
   id: string;
   title: string;
   description: string;
   priceInCents: number;
-  status: "available" | "sold" | "cancelled";
+  status: TProductStatus;
   category: {
     id: string;
     title: string;
