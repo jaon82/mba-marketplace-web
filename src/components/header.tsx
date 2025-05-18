@@ -7,7 +7,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "react-router";
-import ProfileAvatar from "./profile-avatar";
+import { AccountMenu } from "./account-menu";
 import { Button } from "./ui/button";
 import Logo from "/src/assets/logo.svg";
 
@@ -37,7 +37,7 @@ export default function Header() {
               Novo produto
             </Link>
           </Button>
-          <ProfileAvatar />
+          <AccountMenu />
         </div>
       </div>
     </div>
